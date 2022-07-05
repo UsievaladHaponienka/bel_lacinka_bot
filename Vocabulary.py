@@ -63,20 +63,26 @@ __soft_sign_vocabulary = {
     "c": "ć"
 }
 
+
 def get_basic_vocabulary():
     return __basic_vocabulary
+
 
 def get_iotated_vocabulary():
     return __iotated_vocabulary
 
+
 def get_vowel_list():
     return __vowel_list
+
 
 def get_iotated_list():
     return __iotated_list
 
+
 def get_soft_sign_vocabulary():
     return __soft_sign_vocabulary
+
 
 def get_j_required_list():
     return __j_required_list

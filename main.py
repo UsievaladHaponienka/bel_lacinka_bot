@@ -1,23 +1,30 @@
-from telegram.ext.updater import Updater
-from telegram.update import Update
-from telegram.ext.callbackcontext import CallbackContext
 from telegram.ext.commandhandler import CommandHandler
-from telegram.ext.messagehandler import MessageHandler
 from telegram.ext.filters import Filters
-from Coverter import Converter
-import config
+from telegram.ext.messagehandler import MessageHandler
+from telegram.ext.updater import Updater
 
-converter = Converter()
+import config
+import Coverter
+
 
 def help(update, context):
     update.message.reply_text('/help')
 
+
 def start(update, context):
-    update.message.reply_text('Hi, dude!')
+    update.message.reply_text(
+        'Прывітанне! Я - БелЛацінкаБот. Напішыце мне што-небудзь беларускай кірілыцай - '
+        'а я канвертую Ваш тэкст на лацінку. Я яшчэ малады і магу рабіць памылкі (як і ўсе мы ў працэсе вывучэння '
+        'роднай мовы), таму не судзіце занадта строга)\n\n'
+        'Pryvitannie! Ja - BielLacinkaBot. Napišycie mnie što-niebudź bielaruskaj kirilycaj - '
+        'a ja kanviertuju Vaš tekst na lacinku. Ja jašče malady i mahu rabić pamylki (jak i ǔsie my ǔ pracesie'
+        ' vyvučennia rodnaj movy), tamu nie sudzicie zanadta stroha)')
+
 
 def convert(update, context):
-    result = converter.convert(update.message.text)
+    result = Coverter.convert(update.message.text)
     update.message.reply_text(result)
+
 
 def main():
     updater = Updater(config.getToken(), use_context=True)
@@ -32,6 +39,7 @@ def main():
     updater.start_polling()
 
     updater.idle()
+
 
 if __name__ == '__main__':
     main()
