@@ -1,12 +1,14 @@
-from telegram.ext.commandhandler import CommandHandler
-from telegram.ext.filters import Filters
-from telegram.ext.messagehandler import MessageHandler
-from telegram.ext.updater import Updater
+from telegram.ext import CommandHandler, Filters, MessageHandler, Updater
+import logging
 import random
 import config
 import Coverter
 import Rules
 
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                    level=logging.INFO)
+
+logger = logging.getLogger(__name__)
 
 def start(update, context):
     update.message.reply_text(
@@ -24,7 +26,7 @@ def help(update, context):
     update.message.reply_text(
         '/start - Прывітальнае паведамленне\n'
         '/help - спіс каманд (зараз вы яго і бачыце)\n'
-        '/rules + лічба ад 1 да 4 - правіла выкарыстання беларускай лацінка. Так, іх усяго, бо лацінка - гэта, '
+        '/rules + лічба ад 1 да 4 - правіла выкарыстання беларускай лацінка. Так, іх усяго 4, бо лацінка - гэта, '
         'насамрэч, даволі лёгка)\n'
         '/history - тут пакуль нічога няма, але хутка будуць гістарыныя прыклады выкарыстання лацінкі\n\n'
         '/start - Pryvitaĺnaje paviedamliennie\n'
@@ -57,6 +59,14 @@ def history(update, context):
                               "Tut pakuĺ ničoha niama, alie chutka abaviazkova budzie!")
 
 
+def error(update, context):
+    logger.warning('Update "%s" caused error "%s"', update, context.error)
+
+
+def test(update, context):
+    pass
+
+
 def main():
     updater = Updater(config.getToken(), use_context=True)
 
@@ -66,8 +76,11 @@ def main():
     dp.add_handler(CommandHandler("help", help))
     dp.add_handler(CommandHandler("rules", rules))
     dp.add_handler(CommandHandler("history", history))
+    dp.add_handler(CommandHandler("test", test))
 
     dp.add_handler(MessageHandler(Filters.text, convert))
+
+    dp.add_error_handler(error)
 
     updater.start_polling()
 
